@@ -1,0 +1,530 @@
+cities:
+  - name: "Atlanta"
+    color: "blue"
+    population: 506811
+    connections: ["Chicago", "Washington", "Miami"]
+    research_station: true  # Starting city
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 375
+    location_y: 350
+
+  - name: "Chicago"
+    color: "blue"
+    population: 2716000
+    connections: ["Atlanta", "San Francisco", "Mexico City", "Los Angeles", "Montreal"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 378
+    location_y: 290
+
+  - name: "Washington"
+    color: "blue"
+    population: 702455
+    connections: ["Atlanta", "Miami", "Montreal", "New York"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 420
+    location_y: 343
+
+  - name: "San Francisco"
+    color: "blue"
+    population: 883305
+    connections: ["Chicago", "Tokyo", "Manila", "Los Angeles"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 270
+    location_y: 300
+
+  - name: "Montreal"
+    color: "blue"
+    population: 1704694
+    connections: ["Chicago", "Washington", "New York"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 440
+    location_y: 275
+
+  - name: "New York"
+    color: "blue"
+    population: 8419000
+    connections: ["Montreal", "Washington", "London", "Madrid"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 450
+    location_y: 308
+
+  - name: "London"
+    color: "blue"
+    population: 8982000
+    connections: ["New York", "Madrid", "Paris", "Essen"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 650
+    location_y: 260
+
+#EDITED Must verify
+  - name: "Madrid"
+    color: "blue"
+    population: 3220000
+    connections: ["New York", "London", "Paris", "Sao Paulo", "Algiers"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 648
+    location_y: 310
+
+  - name: "Paris"
+    color: "blue"
+    population: 2148327
+    connections: ["London", "Madrid", "Essen", "Milan", "Algiers"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 688
+    location_y: 290
+
+  - name: "Milan"
+    color: "blue"
+    population: 2148327
+    connections: ["Istanbul", "Essen", "Paris"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 750
+    location_y: 275
+
+  - name: "Essen"
+    color: "blue"
+    population: 583109
+    connections: ["London", "Paris", "Milan", "St. Petersburg"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 720
+    location_y: 245
+
+  - name: "Istanbul"
+    color: "black"
+    population: 15462452
+    connections: ["Milan", "Algiers", "Cairo", "St. Petersburg", "Moscow", "Baghdad"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 810
+    location_y: 320
+
+  - name: "Moscow"
+    color: "black"
+    population: 11920000
+    connections: ["Istanbul", "St. Petersburg", "Tehran"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 840
+    location_y: 270
+
+  - name: "Sao Paulo"
+    color: "yellow"
+    population: 12330000
+    connections: ["Madrid", "Bogota", "Buenos Aires", "Lagos"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 550
+    location_y: 500
+
+  - name: "Buenos Aires"
+    color: "yellow"
+    population: 2890151
+    connections: ["Sao Paulo", "Bogota"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 509
+    location_y: 555
+
+  - name: "Lagos"
+    color: "yellow"
+    population: 14000000
+    connections: ["Sao Paulo", "Khartoum", "Kinshasa"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 672
+    location_y: 440
+
+  - name: "Kinshasa"
+    color: "yellow"
+    population: 13528000
+    connections: ["Khartoum", "Johannesburg", "Lagos"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 730
+    location_y: 480
+
+  - name: "Khartoum"
+    color: "yellow"
+    population: 5776553
+    connections: ["Lagos", "Kinshasa", "Johannesburg", "Cairo"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 760
+    location_y: 420
+
+#EDITED
+  - name: "Cairo"
+    color: "black"
+    population: 10100553
+    connections: ["Khartoum", "Istanbul", "Algiers", "Baghdad", "Riyadh"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 765
+    location_y: 350
+
+  - name: "Johannesburg"
+    color: "yellow"
+    population: 957441
+    connections: ["Kinshasa", "Khartoum"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 767
+    location_y: 578
+
+  - name: "Los Angeles"
+    color: "yellow"
+    population: 3990456
+    connections: ["San Francisco", "Sydney", "Mexico City", "Chicago"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 280
+    location_y: 350
+
+  - name: "Mexico City"
+    color: "yellow"
+    population: 9209944
+    connections: ["Chicago", "Los Angeles", "Miami", "Bogota", "Lima"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 320
+    location_y: 400
+
+  - name: "Miami"
+    color: "yellow"
+    population: 467963
+    connections: ["Atlanta", "Mexico City", "Washington", "Bogota"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 420
+    location_y: 380
+
+  - name: "Bogota"
+    color: "yellow"
+    population: 745955
+    connections: ["Mexico City", "Miami", "Sao Paulo", "Buenos Aires", "Lima"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 410
+    location_y: 440
+
+  - name: "Lima"
+    color: "yellow"
+    population: 9674755
+    connections: ["Mexico City", "Bogota", "Santiago"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 430
+    location_y: 530
+
+  - name: "Santiago"
+    color: "yellow"
+    population: 5743719
+    connections: ["Lima"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 425
+    location_y: 630
+
+  - name: "Tokyo"
+    color: "red"
+    population: 13929286
+    connections: ["San Francisco", "Seoul", "Shanghai", "Osaka"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1190
+    location_y: 320
+
+  - name: "Seoul"
+    color: "red"
+    population: 9776000
+    connections: ["Tokyo", "Shanghai", "Beijing"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1140
+    location_y: 300
+
+  - name: "Shanghai"
+    color: "red"
+    population: 24150000
+    connections: ["Tokyo", "Seoul", "Beijing", "Taipei", "Hong Kong"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1080
+    location_y: 330
+
+  - name: "Beijing"
+    color: "red"
+    population: 21516000
+    connections: ["Seoul", "Shanghai"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1080
+    location_y: 290
+
+  - name: "Taipei"
+    color: "red"
+    population: 26462000
+    connections: ["Shanghai", "Manila", "Hong Kong", "Osaka"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1130
+    location_y: 370
+
+  - name: "Osaka"
+    color: "red"
+    population: 2691000
+    connections: ["Tokyo", "Taipei"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1180
+    location_y: 365
+
+  - name: "Hong Kong"
+    color: "red"
+    population: 7496981
+    connections: ["Taipei", "Bangkok", "Manila", "Shanghai", "Kolkata", "Ho Chi Minh City"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1078
+    location_y: 380
+
+  - name: "Bangkok"
+    color: "red"
+    population: 10539000
+    connections: ["Hong Kong", "Chennai", "Jakarta", "Ho Chi Minh City", "Kolkata"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1030
+    location_y: 410
+
+  - name: "Jakarta"
+    color: "red"
+    population: 10770487
+    connections: ["Bangkok", "Ho Chi Minh City", "Chennai", "Sydney"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1030
+    location_y: 470
+
+  - name: "Manila"
+    color: "red"
+    population: 1780148
+    connections: ["San Francisco", "Hong Kong", "Ho Chi Minh City", "Sydney", "Taipei"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1130
+    location_y: 470
+
+  - name: "Ho Chi Minh City"
+    color: "red"
+    population: 8423000
+    connections: ["Bangkok", "Jakarta", "Manila", "Hong Kong"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1080
+    location_y: 450
+
+  - name: "Sydney"
+    color: "red"
+    population: 5312163
+    connections: ["Los Angeles", "Jakarta", "Manila"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1210
+    location_y: 580
+
+  - name: "Mumbai"
+    color: "black"
+    population: 20411000
+    connections: ["Delhi", "Chennai", "Karachi"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 940
+    location_y: 392
+
+  - name: "Delhi"
+    color: "black"
+    population: 28514000
+    connections: ["Mumbai", "Kolkata", "Chennai", "Karachi", "Tehran"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 980
+    location_y: 360
+
+  - name: "Chennai"
+    color: "black"
+    population: 4646732
+    connections: ["Mumbai", "Delhi", "Kolkata", "Jakarta", "Bangkok"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 970
+    location_y: 430
+
+  - name: "Kolkata"
+    color: "black"
+    population: 4486679
+    connections: ["Chennai", "Delhi", "Bangkok", "Hong Kong"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 1029
+    location_y: 350
+
+  - name: "Riyadh"
+    color: "black"
+    population: 6881000
+    connections: ["Baghdad", "Cairo", "Karachi"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 840
+    location_y: 400
+
+  - name: "Baghdad"
+    color: "black"
+    population: 7180000
+    connections: ["Istanbul", "Tehran", "Karachi", "Riyadh", "Cairo"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 835
+    location_y: 355
+
+  - name: "Tehran"
+    color: "black"
+    population: 8392000
+    connections: ["Moscow", "Delhi", "Baghdad", "Karachi"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 890
+    location_y: 290
+
+  - name: "Karachi"
+    color: "black"
+    population: 14910352
+    connections: ["Mumbai", "Riyadh", "Tehran", "Baghdad", "Delhi"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 895
+    location_y: 340
+
+  - name: "Algiers"
+    color: "black"
+    population: 3418000
+    connections: ["Madrid", "Paris", "Istanbul", "Cairo"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 690
+    location_y: 355
+
+  - name: "St. Petersburg"
+    color: "blue"
+    population: 5383890
+    connections: ["Essen", "Istanbul", "Moscow"]
+    research_station: false
+    disease_cubes: 0
+    outbreak_level: 0
+    infection_rate: 0
+    location_x: 780
+    location_y: 220
