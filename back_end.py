@@ -36,11 +36,12 @@ class GUI:
     def __init__(self):
         print("GUI created")
         self.root = tk.Tk()
-        self.root.geometry("600x400")
+        self.root.geometry("1280x700")
         self.main_frame = tk.Frame(self.root)
         self.canvas = None
         self.scrollbar = None
         self.oval = None
+        self.research_station_image = None
         self.button_dict = {}
 
 
@@ -93,26 +94,17 @@ class GUI:
 
         self.main_frame.pack(expand=True, fill="both")
 
-        # Create a menu Frame on the left side
-        # menu_frame = tk.Frame(self.main_frame, width=100)
-        # menu_frame.pack(side=tk.LEFT, fill=tk.Y)
-        # Add buttons to the menu frame (outside of the image)
-        # btn1 = tk.Button(menu_frame, text="Button 1")
-        # btn1.pack(pady=10)
-        # btn2 = tk.Button(menu_frame, text="Button 2")
-        # btn2.pack(pady=10)
-
         # Create a Canvas to display the image and overlay buttons
         self.canvas = tk.Canvas(self.main_frame, width=image_width, height=image_height)
         self.canvas.pack(expand=True, fill="both")
 
         # Add a Scrollbar
         self.scrollbar = tk.Scrollbar(self.root, orient=tk.VERTICAL, command=self.canvas.yview)
-        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.scrollbar.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Configure Canvas to use Scrollbar
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
-        # self.canvas.bind('<Configure>', self._on_canvas_resize)
+        self.canvas.bind("<MouseWheel>", self._on_mousewheel)
 
         # Display the image on the Canvas
         self.canvas.create_image(0, 0, anchor=tk.NW, image=tk_image)
@@ -131,6 +123,12 @@ class GUI:
         #Add Oval
         self.place_oval_backdrop(OVAL_OFF_BOARD,OVAL_OFF_BOARD)
 
+        #Add research station
+        rs_image = Image.open("research_station.png")  # Replace with your PNG file
+        rs_image = rs_image.resize((20, 20))  # Resize to make it smaller
+        self.research_station_image =ImageTk.PhotoImage(rs_image)
+        self.place_research_station(self.game.city_dict["Atlanta"].x, self.game.city_dict["Atlanta"].y)
+
         # Add players on map
         for i in range(len(self.game.player_list)):
             self.place_player(self.game.player_list[i])
@@ -141,19 +139,14 @@ class GUI:
             if i < len(self.game.player_list) - 1:
                 self.add_active_player_rectangle(start_point+width*i, 700, start_point+width*(i+1), 850)
 
+
         self.game_initialize()
 
         self.root.mainloop()
 
-
-    # def _update_scroll_region(self, event):
-    #     """Update the scroll region when the frame size changes."""
-    #     self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-    #
-    # def _on_canvas_resize(self, event):
-    #     """Adjust the frame width to match the canvas width."""
-    #     canvas_width = event.width
-    #     self.canvas.itemconfig(self.main_frame, width=canvas_width)
+    def _on_mousewheel(self, event):
+        """Scroll the canvas with the mouse wheel."""
+        self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
     def add_active_player_rectangle(self, x1=50,y1=50,x2=200,y2=150):
 
@@ -164,7 +157,6 @@ class GUI:
             width=3,  # Line thickness
             fill=""  # No fill
         )
-
 
     def add_player_alt_info_text(self):
 
@@ -219,7 +211,6 @@ class GUI:
                 font=("Arial", 7, "bold"),
                 anchor=tk.NW  # Anchor the top-left of the text to (text_x, text_y)
             )
-
 
 
     def add_player_info_text_items(self):
@@ -394,9 +385,6 @@ class GUI:
         y = player.city.y
         id = self.canvas.create_image(x + x_offset, y + y_offset, anchor=tk.NW, image=self.tk_overlay_image[player.id])
         self.player_image_id[player.id] = id
-        print("Overlay image placed.")
-
-        # city = self.game.player_list[0].city
 
     def move_player(self, name, player):
 
@@ -428,6 +416,14 @@ class GUI:
         )
         self.canvas.itemconfig(self.oval, stipple="gray25")
 
+    def place_research_station(self, x=10, y=10):
+        # This function places reserach stations at position x and y
+        print("placing research station")
+        # X and Y offsets
+        x_offset = 20
+        y_offset = 0
+        id = self.canvas.create_image(x + x_offset, y + y_offset, anchor=tk.NW, image=self.research_station_image) # return id not used
+
     def move_oval_backdrop(self, x, y):
         oval_x1 = x + 5
         oval_y1 = y
@@ -457,6 +453,7 @@ class GUI:
         if name == "Research Station":
             if self.game.player_build_research_station(self.player_pointer+1):
                 self.actions += 1
+                self.place_research_station(self.game.player_list[self.player_pointer].city.x, self.game.player_list[self.player_pointer].city.y)    #add reserach station image
 
         elif name == "Treat":
             if self.game.player_treat_disease(self.player_pointer+1):
@@ -496,7 +493,6 @@ class GUI:
 
             # Update graphics for player change
             self.update_active_player_view()
-
 
     def game_initialize(self):
 
@@ -553,7 +549,6 @@ class GUI:
 
             # String for additional data
             s = ""
-            s += RED
             s += "Current City: "
             s += str(self.game.player_list[player_index].city.name)
             s += "\n"
@@ -571,23 +566,22 @@ class GUI:
         for key, value in self.game.city_dict.items():
             self.canvas.itemconfig(self.button_dict[key][1], text=str(value.disease_cubes))
 
-
     def print_info(self):
         s=''
         s+='**********************\n'
-        # for i in range(len(self.game.player_list)):
-        #     s+=str(self.game.player_list[i].user_name)
-        #     s+='\n'
-        #     s+=str(self.game.player_list[i].city.name)
-        #     s+='\n'
-        #     s+=str(self.game.player_list[i].cards)
-        #     s+='\n'
-        #     s+=str(self.game.player_list[i].id)
-        #     s+='\n'
-        s+=str(self.game.infection_deck_down)
-        s+='\n'
-        s+=str(self.game.infection_deck_up)
-        s+='\n'
+        for i in range(len(self.game.player_list)):
+            s+=str(self.game.player_list[i].user_name)
+            s+='\n'
+            s+=str(self.game.player_list[i].city.name)
+            s+='\n'
+            s+=str(self.game.player_list[i].cards)
+            s+='\n'
+            s+=str(self.game.player_list[i].id)
+            s+='\n'
+        # s+=str(self.game.infection_deck_down)
+        # s+='\n'
+        # s+=str(self.game.infection_deck_up)
+        # s+='\n'
 
         print(s)
 
