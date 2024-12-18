@@ -14,16 +14,19 @@ NUMBER_OF_ACTIONS = 4
 INFECTION_RATE = [2,2,2,3,3,4,4,0]
 NICE_CARD_DECK = ["One Quiet Night", "Baby Baby"]
 overlay_image_id = None
-OVAL_WIDTH = 14
-OVAL_HEIGHT = 25
-OVAL_OFF_BOARD = 1000
 
 #IMAGE
 LARGE_ICON_ACTIVE_X = 280
-LARGE_ICON_ACTIVE_Y = 555
-LARGE_ICON_PASSIVE_Y = 705
+LARGE_ICON_ACTIVE_Y = 535 #555  # Anchor for all large box display items
+LARGE_ICON_PASSIVE_Y = 685 #705 # Anchor for all small  box display items
 LARGE_ICON_OFFSET = 450
 LARGE_ICON_WIDTH = 159
+OVAL_WIDTH = 14
+OVAL_HEIGHT = 25
+OVAL_OFF_BOARD = 1000
+MAP_BOTTOM = 830    # Bottom of canvas
+MAP_SIDE = 1450    # Right side of canvas
+
 
 #COLORS
 RESET = "\033[0m"  # Reset to default color
@@ -36,14 +39,13 @@ class GUI:
     def __init__(self):
         print("GUI created")
         self.root = tk.Tk()
-        self.root.geometry("1280x700")
+        self.root.geometry("%sx%s" % (MAP_SIDE, MAP_BOTTOM))
         self.main_frame = tk.Frame(self.root)
         self.canvas = None
         self.scrollbar = None
         self.oval = None
         self.research_station_image = None
         self.button_dict = {}
-
 
         self.number_of_players = 4
 
@@ -56,6 +58,10 @@ class GUI:
         self.large_icon_image = [0] * self.number_of_players
         self.text_items_player_name = [0] * self.number_of_players
         self.text_player_alt_info = [0] * self.number_of_players
+        self.black_background = []
+        self.general_image = []
+        self.text_outbreaks = None
+        self.text_infection_rate = None
 
         #State Machine
         self.player_pointer = 0
@@ -108,9 +114,16 @@ class GUI:
 
         # Display the image on the Canvas
         self.canvas.create_image(0, 0, anchor=tk.NW, image=tk_image)
+        self.place_black_background(0, 0, MAP_SIDE, MAP_BOTTOM)
 
         #add rectangle to bottom left
-        self.add_active_player_rectangle(20, 550, 350, 850)
+        self.add_rectangle(20, LARGE_ICON_ACTIVE_Y - 5, 350, MAP_BOTTOM)
+
+        # Add outbreak text
+        self.add_outbreaks_text(0)
+
+        #Add infection rate text
+        self.add_infection_rate_text()
 
         # Add lines on map
         for key, city in self.game.city_dict.items():
@@ -137,8 +150,7 @@ class GUI:
             width = 159
             start_point = 350
             if i < len(self.game.player_list) - 1:
-                self.add_active_player_rectangle(start_point+width*i, 700, start_point+width*(i+1), 850)
-
+                self.add_rectangle(start_point+width*i, LARGE_ICON_PASSIVE_Y-5, start_point+width*(i+1), MAP_BOTTOM)
 
         self.game_initialize()
 
@@ -148,7 +160,7 @@ class GUI:
         """Scroll the canvas with the mouse wheel."""
         self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
-    def add_active_player_rectangle(self, x1=50,y1=50,x2=200,y2=150):
+    def add_rectangle(self, x1=50,y1=50,x2=200,y2=150):
 
         # Draw the rectangle outline
         self.canvas.create_rectangle(
@@ -157,6 +169,9 @@ class GUI:
             width=3,  # Line thickness
             fill=""  # No fill
         )
+
+        # Add black box
+        self.place_black_background(x1, y1, x2, y2)
 
     def add_player_alt_info_text(self):
 
@@ -189,7 +204,7 @@ class GUI:
 
         # Active player info
         text_x = 50
-        text_y = 590
+        text_y = LARGE_ICON_ACTIVE_Y + 35
         self.text_player_alt_info[0] = self.canvas.create_text(
             text_x, text_y,
             text="",  # Initial text
@@ -198,9 +213,8 @@ class GUI:
             anchor=tk.NW  # Anchor the top-left of the text to (text_x, text_y)
         )
 
-        #self.canvas.itemconfig(self.text_items_player_data[0], text=new_text)
 
-        text_y = 722
+        text_y = LARGE_ICON_PASSIVE_Y + 17
         width = 159
         start_point = 355
         for i in range(self.number_of_players - 1):
@@ -212,12 +226,58 @@ class GUI:
                 anchor=tk.NW  # Anchor the top-left of the text to (text_x, text_y)
             )
 
+    def add_outbreaks_text(self, outbreaks=0):
+        # add test showing outbreaks
+        text_x = 65
+        text_y = 55
+
+        self.add_rectangle(50, 10, 135, 90)
+
+        self.place_general_image(50+20, 10+5, 135-20, 90-35, "outbreak.png")
+
+        self.text_outbreaks = self.canvas.create_text(
+            text_x, text_y,
+            text="%s / %s" % (outbreaks, OUTBREAK_LIMIT),  # Initial text
+            fill="RED",
+            font=("Arial", 20, "bold"),
+            anchor=tk.NW  # Anchor the top-left of the text to (text_x, text_y)
+        )
+
+    def update_outbreaks_text(self, outbreaks=0):
+        # update outbreak text
+        self.canvas.itemconfig(self.text_outbreaks, text="%s / %s" % (outbreaks, OUTBREAK_LIMIT))
+
+    def add_infection_rate_text(self):
+        # add test showing outbreaks
+        text_x = 200
+        text_y = 50
+
+        self.add_rectangle(text_x-5, 10, text_x+100, 90)
+
+        self.place_general_image(text_x-5+32, 10+5, text_x+100-32, 90-40, "infection_rate.png")
+
+        self.text_infection_rate = self.canvas.create_text(
+            text_x, text_y,
+            text="Current: %s \nNext: %s" % (self.game.infection_rate, INFECTION_RATE[self.game.outbreaks + 1]),  # Initial text
+            fill="Yellow",
+            font=("Arial", 12, "bold"),
+            anchor=tk.NW  # Anchor the top-left of the text to (text_x, text_y)
+        )
+
+    def update_infection_rate_text(self):
+        # update outbreak text
+        try:
+            next_rate = INFECTION_RATE[self.game.outbreaks + 1]
+        except:
+            next_rate = "END"
+        self.canvas.itemconfig(self.text_infection_rate, text="Current: %s \nNext: %s" % (self.game.infection_rate, next_rate))
+
 
     def add_player_info_text_items(self):
 
         # Active player info
         text_x = 40
-        text_y = 550
+        text_y = LARGE_ICON_ACTIVE_Y
         self.text_items_player_name[0] = self.canvas.create_text(
             text_x, text_y,
             text="",  # Initial text
@@ -228,7 +288,7 @@ class GUI:
 
         #self.canvas.itemconfig(self.text_items_player_data[0], text=new_text)
 
-        text_y = 705
+        text_y = LARGE_ICON_PASSIVE_Y
         width = 159
         start_point = 355
         for i in range(self.number_of_players - 1):
@@ -290,7 +350,7 @@ class GUI:
     def add_button_research_station(self):
         button = tk.Button(self.root, text="RS")
         x = 30
-        y = 800
+        y = MAP_BOTTOM - 45
         circle = self.canvas.create_oval(x, y, x + 40, y + 40, fill="Grey", outline="Black")
 
         text_color = "white"
@@ -306,7 +366,7 @@ class GUI:
     def add_button_treat(self):
         button = tk.Button(self.root, text="Treat")
         x = 100
-        y = 800
+        y = MAP_BOTTOM - 45
         circle = self.canvas.create_oval(x, y, x + 40, y + 40, fill="Grey", outline="Black")
 
         text_color = "white"
@@ -322,7 +382,7 @@ class GUI:
     def add_button_share(self):
         button = tk.Button(self.root, text="Share")
         x = 170
-        y = 800
+        y = MAP_BOTTOM - 45
         circle = self.canvas.create_oval(x, y, x + 40, y + 40, fill="Grey", outline="Black")
 
         text_color = "white"
@@ -338,7 +398,7 @@ class GUI:
     def add_button_cure(self):
         button = tk.Button(self.root, text="Cure")
         x = 240
-        y = 800
+        y = MAP_BOTTOM - 45
         circle = self.canvas.create_oval(x, y, x + 40, y + 40, fill="Grey", outline="Black")
 
         text_color = "white"
@@ -424,6 +484,32 @@ class GUI:
         y_offset = 0
         id = self.canvas.create_image(x + x_offset, y + y_offset, anchor=tk.NW, image=self.research_station_image) # return id not used
 
+    def place_black_background(self, x1, y1, x2, y2):
+        # Adds black background with opacity at x and y
+        b_back_image = Image.open("black_square_opacity.png")  # Replace with your PNG file
+
+        # Large Active Player Box
+        width = abs(x2 - x1)
+        height = abs(y2 - y1)
+        b_back_image = b_back_image.resize((width, height))  # Resize to make it smaller
+        self.black_background.append(ImageTk.PhotoImage(b_back_image))
+
+        id = self.canvas.create_image(x1, y1, anchor=tk.NW, image=self.black_background[-1]) # Places black box at last place in the list
+
+    def place_general_image(self, x1, y1, x2, y2, image_name):
+        # Adds black background with opacity at x and y
+        image = Image.open(image_name)  # Replace with your PNG file
+
+        # Large Active Player Box
+        width = abs(x2 - x1)
+        height = abs(y2 - y1)
+        image = image.resize((width, height))  # Resize to make it smaller
+        self.general_image.append(ImageTk.PhotoImage(image))
+
+        id = self.canvas.create_image(x1, y1, anchor=tk.NW, image=self.general_image[-1]) # Places black box at last place in the list
+
+
+
     def move_oval_backdrop(self, x, y):
         oval_x1 = x + 5
         oval_y1 = y
@@ -481,7 +567,7 @@ class GUI:
         if self.actions >= NUMBER_OF_ACTIONS:
             self.actions = 0
 
-            self.game.player_draw_player_cards(self.player_pointer)
+            self.game.player_draw_player_cards(self.player_pointer+1)
 
             #Infect cities
             infected_cities = self.game.board_infect_cities() #Board's turn
@@ -543,7 +629,7 @@ class GUI:
 
         # Update Other player data
         for i in range(self.number_of_players - 1):
-            player_index = (self.player_pointer+i + 1)%self.number_of_players
+            player_index = (self.player_pointer+i+1)%self.number_of_players
             self.canvas.itemconfig(self.text_items_player_name[i+1], text=self.game.player_list[player_index].user_name)
             self.canvas.coords(self.large_icon_image[player_index], LARGE_ICON_OFFSET+(i)*LARGE_ICON_WIDTH, LARGE_ICON_PASSIVE_Y)
 
@@ -556,15 +642,20 @@ class GUI:
             s += str(self.game.player_list[player_index].role)
             s += "\n"
             s += "_______Cards_______\n"
-            for i in range(len(self.game.player_list[player_index].cards)):
-                s += str(self.game.player_list[player_index].cards[i])
+            for j in range(len(self.game.player_list[player_index].cards)):
+                s += str(self.game.player_list[player_index].cards[j])
                 s += "\n"
-            self.canvas.itemconfig(self.text_player_alt_info[player_index], text=s)
-
+            self.canvas.itemconfig(self.text_player_alt_info[i+1], text=s)
 
         #Update board with infected cities
         for key, value in self.game.city_dict.items():
             self.canvas.itemconfig(self.button_dict[key][1], text=str(value.disease_cubes))
+
+        # Update outbreaks text
+        self.update_outbreaks_text(self.game.outbreaks)
+
+        # Update infection rate text
+        self.update_infection_rate_text()
 
     def print_info(self):
         s=''
@@ -584,7 +675,6 @@ class GUI:
         # s+='\n'
 
         print(s)
-
 
 class PLAYER:
     def __init__(self, city, id, user_name='', cards=[], role=None):
@@ -920,6 +1010,7 @@ class GAME:
     def outbreak(self):
         self.outbreaks += 1
         print('WARNING! Now at %s Outbreaks out of %s' % (str(self.outbreaks), str(OUTBREAK_LIMIT)))
+        self.infection_rate = INFECTION_RATE[self.outbreaks]
 
     def game_setup(self):
 
